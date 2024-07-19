@@ -1,3 +1,4 @@
+using System.IO;
 using EntityFrameWorkHomeWork01.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,11 @@ public class ApplicationDbContext : Microsoft.EntityFrameworkCore.DbContext
     {
         var configuration = App.Provider.GetService<ConfigurationBuilder>()!;
 
-        configuration.SetBasePath(@"C:\Users\User\RiderProjects\EntityFrameWorkHomeWork01\EntityFrameWorkHomeWork01\Config");
+        var path = Directory.GetCurrentDirectory();
+
+        var newPath = Path.GetFullPath(Path.Combine(path, @"..\..\..\Config"));
+
+        configuration.SetBasePath(newPath);
 
         var cs = configuration.AddJsonFile(@"package.json").Build();
 
