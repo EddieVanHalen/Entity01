@@ -49,7 +49,11 @@ public partial class MainPageViewModel : BaseViewModel
             IsDeleteButtonActive = true;
             IsUpdateButtonActive = true;
             ItemToCreate = Items[SelectedItemIndex];
+            return;
         }
+
+        IsDeleteButtonActive = false;
+        IsUpdateButtonActive = false;
     }
 
     [RelayCommand]
@@ -72,6 +76,8 @@ public partial class MainPageViewModel : BaseViewModel
         Items.Add(ItemToCreate);
 
         ItemToCreate = new();
+
+        App.Provider.GetService<IMessageBox>()!.Print("Succesfully Added!!!");
     }
 
     [RelayCommand]
@@ -85,6 +91,10 @@ public partial class MainPageViewModel : BaseViewModel
         await DbContext.Items.Where(i => i.Id == Items[SelectedItemIndex].Id).ExecuteDeleteAsync();
 
         Items.RemoveAt(SelectedItemIndex);
+
+        ItemToCreate = new();
+
+        App.Provider.GetService<IMessageBox>()!.Print("Succesfully Deleted!!!");
     }
 
     [RelayCommand]
@@ -107,6 +117,8 @@ public partial class MainPageViewModel : BaseViewModel
         await LoadDbData();
 
         SelectedItemIndex = -1;
+
+        ItemToCreate = new();
 
         App.Provider.GetService<IMessageBox>()!.Print("Succesfully Updated!!!");
     }
